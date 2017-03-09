@@ -1,0 +1,41 @@
+Les fichiers :
+        iimp.l : décrit la grammaire et les actions de l'analyseur lexical
+                Flex -> produit un fichier iimp.c
+        iimp.y : décrit la grammaire et les actions de l'analyseur syntaxique
+                Bison -> produit un fichier myCompImp.c et myCompImp.h
+On compile les deux fichiers .c grâce à myCompImp.h
+
+########## iimp.y ##########
+
+%{
+#include <stdio.h>
+#define YYSTYPE int                   // type de données pour stocker les attributs des symboles dans les variables $$, $1... associées aux éléments de chaque règle de production
+int yyparse();                        // analyseur syntaxique dont bison va fournir l'implémentation
+int yylex();                          // récupère les symboles de la grammaire
+yyerror(char *s);                     // appelée par Bison si erreur
+%}
+
+DEFINITIONS                          // Symboles terminaux qui seront fournis par yylex()
+%token ENTIER                        // ex
+%token MOINS                         // ex
+
+%%
+
+REGLES
+
+%%
+
+CODE C
+
+
+########## iimp.l ##########
+
+%{
+#include "myCompImp.h"
+%}
+
+%%
+
+:=              { return X; }      // ex
+
+%%
