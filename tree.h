@@ -8,13 +8,13 @@ typedef struct tree {
   union {
     struct {struct tree *left, *right; char operator;} an_operator;
     int a_number;
-    char a_variable;
+    char* a_variable;
   } body;
 }tree;
 
 tree *make_operator(tree *l, char o, tree *r);
 tree *make_number(int n);
-tree *make_variable(char v);
+tree *make_variable(char* v);
 void printTree (tree *t, int level);
 
 #endif

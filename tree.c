@@ -20,7 +20,7 @@ tree *make_number(int n) {
   return result;
 }
 
-tree *make_variable(char v) {
+tree *make_variable(char* v) {
   tree *result = (tree*) malloc (sizeof(tree));
   result->nodetype = variable_node;
   result->body.a_variable = v;

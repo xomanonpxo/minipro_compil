@@ -12,20 +12,15 @@ int yyerror(char *s);
   char a_variable;
   struct tree* a_tree;
 }
-%start C
+%start S
 %token <a_number> I
 %token <a_variable> V
-%type <a_tree> E T F C
+%type <a_tree> S E T F
 %token Af Sk Se If Th El Wh Do Pl Mo Mu
 
 %%
 
-C : V Af E            { $$ = $3; }
-  | Sk                { return 1; }
-  | '(' C ')'         { $$ = $2; }
-  | If E Th C El C    { if ($2 != 0) { $$ = $4; } else { $$ = $6; } }
-  | Wh E Do C         { while ($2 != 0) { $$ = $4; }}
-  ;
+S : E                 { printTree($1, 1); }
 
 E : Pl T              { $$ = $2; }
   | Mo T              { $$ = make_operator(NULL, '-', $2); }
@@ -39,7 +34,7 @@ T : F                 { $$ = $1; }
   ;
 
 F : I                 { $$ = make_number($1); }
-  | V                 { $$ = make_variable($1); }
+  | V                 { $$ = make_variable(&$1);}
   | '(' E ')'         { $$ = $2; }
   ;
 
