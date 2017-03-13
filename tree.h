@@ -12,9 +12,9 @@ typedef struct tree {
   } body;
 }tree;
 
-static tree *make_operator(tree *l, char o, tree *r);
-static tree *make_number(int n);
-static tree *make_variable(char v);
-static void printTree (tree *t, int level);
+tree *make_operator(tree *l, char o, tree *r);
+tree *make_number(int n);
+tree *make_variable(char v);
+void printTree (tree *t, int level);
 
 #endif

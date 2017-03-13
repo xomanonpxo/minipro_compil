@@ -1,8 +1,10 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include "tree.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "tree.h"
 
-static tree *make_operator(tree *l, char o, tree *r) {
+typedef struct tree tree;
+
+tree *make_operator(tree *l, char o, tree *r) {
   tree *result = (tree*) malloc (sizeof(tree));
   result->nodetype = operator_node;
   result->body.an_operator.left = l;
@@ -11,21 +13,21 @@ static tree *make_operator(tree *l, char o, tree *r) {
   return result;
 }
 
-static tree *make_number(int n) {
+tree *make_number(int n) {
   tree *result = (tree*) malloc (sizeof(tree));
   result->nodetype  = number_node;
   result->body.a_number = n;
   return result;
 }
 
-static tree *make_variable(char v) {
+tree *make_variable(char v) {
   tree *result = (tree*) malloc (sizeof(tree));
   result->nodetype = variable_node;
   result->body.a_variable = v;
   return result;
 }
 
-static void printTree (tree *t, int level) {
+void printTree (tree *t, int level) {
 #define step 4
   if (t){
     switch (t->nodetype){
