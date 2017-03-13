@@ -1,11 +1,11 @@
 %{
-#include "myCompImp.h"
+#include "y.tab.h"
+#include "tree.h"
 %}
 
 %%
 
-[0-9]+          { yylval.i = atoi(yytext); return I; }
-[A-Za-z0-9]+    { yylval.id = yytext; return V; }
+[0-9]+          { yylval.a_number = atoi(yytext); return I; }
 :=              { return Af; }
 Skip            { return Sk; }
 ;               { return Se; }
@@ -17,7 +17,8 @@ do              { return Do; }
 \+              { return Pl; }
 \-              { return Mo; }
 \*              { return Mu; }
-[\t\n]          { return; }
+[A-Za-z0-9]+    { yylval.a_variable = *yytext; return V; }
+[\t\n]          { return 0; }
 .               { return yytext[0]; }
 
 %%
