@@ -12,15 +12,15 @@ int yyerror(char *s);
   char a_variable;
   struct tree* a_tree;
 }
-%start S
+%start C
 %token <a_number> I
 %token <a_variable> V
-%type <a_tree> S E T F
+%type <a_tree> C E T F
 %token Af Sk Se If Th El Wh Do Pl Mo Mu
 
 %%
 
-S : E                 { printTree($1, 1); }
+C : E                 { printTree($1, 1); }
 
 E : Pl T              { $$ = $2; }
   | Mo T              { $$ = make_operator(NULL, '-', $2); }

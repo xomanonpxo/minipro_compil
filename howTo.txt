@@ -15,9 +15,8 @@ int yylex();                          // récupère les symboles de la grammaire
 yyerror(char *s);                     // appelée par Bison si erreur
 %}
 
-DEFINITIONS                          // Symboles terminaux qui seront fournis par yylex()
-%token ENTIER                        // ex
-%token MOINS                         // ex
+DEFINITIONS                           // Symboles terminaux qui seront fournis par yylex()
+%token ENTIER                         // exemple
 
 %%
 
@@ -31,11 +30,54 @@ CODE C
 ########## iimp.l ##########
 
 %{
-#include "myCompImp.h"
+#include "myCompImp.h"                // inclure l'en-tête .h de l'analyseur syntaxique
 %}
 
 %%
 
-:=              { return X; }      // ex
+[0-9]+              { return X; }    // exemple
 
 %%
+
+
+
+
+
+C : C Se C
+
+bison iimp.y --defines=compilateur.h -o compilateur.c
+gcc -c -Wall compilateur.c
+flex -o iimp.c iimp.l
+gcc -c -Wall iimp.c
+gcc -Wall tree.o compilateur.o iimp.o -o comp
+
+
+yacc -d iimp.y
+lex iimp.l
+cc lex.yy.c y.tab.c tree.c -o comp
+
+
+
+
+C : V Af E            { $$ = $3; }
+  | Sk                { return 1; }
+  | '(' C ')'         { $$ = $2; }
+  | If E Th C El C    { if ($2 != 0) { $$ = $4; } else { $$ = $6; } }
+  | Wh E Do C         { while ($2 != 0) { $$ = $4; }}
+  | E
+  ;
+
+E : Pl T              { $$ = $2; }
+  | Mo T              { $$ = make_operator(NULL, '-', $2); }
+  | T                 { $$ = $1; }
+  | E Pl T            { $$ = make_operator($1, '+', $3); }
+  | E Mo T            { $$ = make_operator($1, '-', $3); }
+  ;
+
+T : F                 { $$ = $1; }
+  | T Mu F            { $$ = make_operator($1, '*', $3); }
+  ;
+
+F : I                 { $$ = make_number($1); }
+  | V                 { $$ = make_variable(&$1); printf("%s", yylval.a_variable);}
+  | '(' E ')'         { $$ = $2; }
